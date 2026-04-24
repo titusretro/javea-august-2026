@@ -803,6 +803,17 @@
       .stack .banner { aspect-ratio: 16 / 10; }
       .stack .banner-title { font-size: 26px; }
     }
+
+    /* Waarschuwings-strook bovenin een kaart */
+    .stack .notice {
+      background: var(--warn-bg);
+      color: var(--warn);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px; line-height: 1.4;
+      border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent);
+    }
+    .stack .notice strong { font-weight: 700; }
   </style>
 </head>
 <body>
@@ -866,6 +877,7 @@
         </div>
         <div class="score-block"><div class="big">9.3<span> / 10</span></div><div class="sublabel">Directe eigenaar</div></div>
       </div>
+      <div class="notice"><strong>Online systeem toont geen beschikbaarheid</strong>; de eigenaar vraagt expliciet om direct te bellen of mailen voor augustus. Dit is gangbaar voor Italiaanse masseria's.</div>
       <p class="lede">Werkende boerderij met eigen restaurant waar een Apulische chef kookt. Kinderen helpen mee bij oogsten. Eigen wijnarsenaal. Geen toeristen in augustus, alleen lokale gasten die voor het eten komen.</p>
       <dl class="facilities">
         <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">In tuin</span></div>
@@ -874,14 +886,14 @@
         <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">20 min, zand</span></div>
       </dl>
       <dl class="specs">
-        <div class="spec"><dt>Prijs</dt><dd>€1.200–€1.800/wk</dd></div>
+        <div class="spec"><dt>Prijs</dt><dd>€1.200–€1.800/wk (indicatie)</dd></div>
         <div class="spec"><dt>Slaapplek</dt><dd>8–10 personen · 4 BR</dd></div>
         <div class="spec"><dt>Locatie</dt><dd>Otranto, Puglia</dd></div>
       </dl>
       <div class="actions">
-        <a class="btn btn-primary" href="https://www.masseriamongio.com/en/" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
-        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Masseria+Mongio+Otranto" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
-        <span class="meta-tail">24 april</span>
+        <a class="btn btn-primary" href="mailto:info@masseriamongio.com?subject=Beschikbaarheid%2020-27%20augustus%202026&body=Buongiorno%2C%0A%0Asiamo%20tre%20adulti%20con%20tre%20bambini%20(eta%204%2C%206%2C%207%20anni)%20e%20cerchiamo%20un%20appartamento%20o%20villa%20dal%2020%20al%2027%20agosto%202026%20(7%20notti).%0A%0ASul%20sito%20non%20vediamo%20disponibilita%20online%20per%20queste%20date.%20Avete%20ancora%20qualcosa%20libero%20per%20quel%20periodo%3F%20Se%20si%2C%20ci%20potete%20indicare%20prezzo%20e%20condizioni%3F%0A%0AGrazie%2C%0ABen">Mail direct</a>
+        <a class="btn btn-ghost" href="tel:+393289764677">Bel +39 328 976 4677</a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Masseria+Mongio+Otranto" target="_blank" rel="noopener">Maps</a>
       </div>
     </div>
   </article>

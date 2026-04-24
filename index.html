@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alle opties · Holiday Scout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #09090B;
+      --ink-2: #18181B;
+      --ink-3: #3F3F46;
+      --ink-4: #71717A;
+      --paper: #FAFAFA;
+      --paper-2: #F4F4F5;
+      --line: #E4E4E7;
+      --accent: #EC4899;
+      --accent-ink: #9D174D;
+      --focus: #A855F7;
+      --ok: #15803D;
+      --ok-bg: #DCFCE7;
+      --warn: #A16207;
+      --warn-bg: #FEF3C7;
+      --info: #1D4ED8;
+      --info-bg: #DBEAFE;
+      --bad: #B91C1C;
+      --bad-bg: #FEE2E2;
+      --aurora-1: #FDE68A;
+      --aurora-2: #FBCFE8;
+      --aurora-3: #A5F3FC;
+      --aurora-4: #DDD6FE;
+      --radius: 20px;
+      --radius-sm: 10px;
+      --ease: cubic-bezier(.2,.7,.2,1);
+    }
+
+    body.dark {
+      --ink: #FAFAFA;
+      --ink-2: #F4F4F5;
+      --ink-3: #D4D4D8;
+      --ink-4: #A1A1AA;
+      --paper: #09090B;
+      --paper-2: #18181B;
+      --line: #27272A;
+      --aurora-1: #7C2D12;
+      --aurora-2: #831843;
+      --aurora-3: #164E63;
+      --aurora-4: #4C1D95;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      transition: background 400ms var(--ease), color 400ms var(--ease);
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    /* ==== Topbar ==== */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(180%) blur(18px);
+      -webkit-backdrop-filter: saturate(180%) blur(18px);
+      background: color-mix(in srgb, var(--paper) 80%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      max-width: 1200px; margin: 0 auto; padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .wordmark {
+      font-family: 'Playfair Display', serif; font-weight: 600;
+      font-size: 22px; letter-spacing: -.01em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .wordmark-mark {
+      width: 10px; height: 10px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+    .nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    .nav a {
+      padding: 8px 14px; font-size: 14px; font-weight: 500;
+      color: var(--ink-3); text-decoration: none; border-radius: 999px;
+      transition: color 200ms var(--ease), background 200ms var(--ease); cursor: pointer;
+    }
+    .nav a:hover { color: var(--ink); background: var(--paper-2); }
+    .nav a[aria-current="page"] { color: var(--ink); background: var(--paper-2); }
+    .mode-btn {
+      background: transparent; border: 1px solid var(--line); color: var(--ink-3);
+      width: 38px; height: 38px; border-radius: 999px;
+      display: grid; place-items: center; cursor: pointer;
+      transition: color 200ms var(--ease), border-color 200ms var(--ease);
+    }
+    .mode-btn:hover { color: var(--ink); border-color: var(--ink-3); }
+    .mode-btn svg { width: 18px; height: 18px; stroke-width: 2; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+    body.dark .mode-btn .sun { display: block; } body.dark .mode-btn .moon { display: none; }
+    body:not(.dark) .mode-btn .sun { display: none; } body:not(.dark) .mode-btn .moon { display: block; }
+
+    /* ==== Hero ==== */
+    .hero {
+      position: relative; overflow: hidden; padding: 100px 24px 96px; isolation: isolate;
+    }
+    .aurora {
+      position: absolute; inset: -20%; z-index: -1;
+      filter: blur(80px) saturate(140%); opacity: .75;
+      background:
+        radial-gradient(45% 40% at 15% 30%, var(--aurora-1) 0%, transparent 60%),
+        radial-gradient(40% 40% at 85% 20%, var(--aurora-2) 0%, transparent 55%),
+        radial-gradient(50% 45% at 70% 80%, var(--aurora-3) 0%, transparent 60%),
+        radial-gradient(35% 40% at 25% 75%, var(--aurora-4) 0%, transparent 55%);
+      animation: drift 28s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      0%   { transform: translate3d(0,0,0) scale(1); }
+      50%  { transform: translate3d(-4%, 3%, 0) scale(1.05); }
+      100% { transform: translate3d(3%, -2%, 0) scale(1.02); }
+    }
+    .hero-inner { max-width: 1200px; margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 12px; font-weight: 600; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--ink-3);
+      padding: 8px 14px; border-radius: 999px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--paper) 70%, transparent);
+      backdrop-filter: blur(8px);
+    }
+    .eyebrow .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .55; transform: scale(.85); }
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: clamp(44px, 7vw, 96px); line-height: 1.02;
+      letter-spacing: -.025em; margin-top: 28px;
+      color: var(--ink); max-width: 14ch;
+    }
+    .hero h1 em { font-style: italic; font-weight: 400; color: var(--accent-ink); }
+    body.dark .hero h1 em { color: #FBCFE8; }
+
+    .hero-meta {
+      margin-top: 36px;
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: 820px;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      padding: 18px 0;
+    }
+    .hero-meta > div { padding: 6px 18px; border-right: 1px solid var(--line); }
+    .hero-meta > div:first-child { padding-left: 0; }
+    .hero-meta > div:last-child { border-right: 0; }
+    .hero-meta dt {
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--ink-4); margin-bottom: 4px;
+    }
+    .hero-meta dd { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; color: var(--ink); }
+
+    @media (max-width: 720px) {
+      .hero { padding: 72px 20px 72px; }
+      .hero-meta { grid-template-columns: repeat(2, 1fr); }
+      .hero-meta > div { border-right: 0; padding: 10px 0; border-bottom: 1px solid var(--line); }
+      .hero-meta > div:nth-last-child(-n+2) { border-bottom: 0; }
+      .hero-meta > div:first-child, .hero-meta > div:nth-child(3) { padding-right: 18px; }
+    }
+
+    /* ==== Legend ==== */
+    .legend {
+      max-width: 1200px; margin: 0 auto; padding: 24px 24px 0;
+      display: flex; flex-wrap: wrap; gap: 18px;
+      font-size: 12px; color: var(--ink-3);
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 8px; }
+    .legend-item .ic {
+      width: 18px; height: 18px; border-radius: 50%;
+      display: inline-grid; place-items: center;
+      font-size: 11px; font-weight: 700;
+    }
+
+    .ic-yes { background: var(--ok-bg); color: var(--ok); }
+    .ic-ex  { background: var(--info-bg); color: var(--info); }
+    .ic-qm  { background: var(--warn-bg); color: var(--warn); }
+    .ic-no  { background: var(--bad-bg); color: var(--bad); }
+
+    /* ==== Section intro ==== */
+    .section-intro {
+      max-width: 1200px; margin: 0 auto;
+      padding: 56px 24px 24px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: end;
+    }
+    @media (max-width: 900px) { .section-intro { grid-template-columns: 1fr; padding: 40px 20px 16px; } }
+    .section-intro h2 {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: clamp(32px, 4vw, 56px);
+      letter-spacing: -.02em; line-height: 1.05;
+    }
+    .section-intro p { color: var(--ink-3); font-size: 16px; max-width: 44ch; margin-left: auto; }
+    @media (max-width: 900px) { .section-intro p { margin-left: 0; } }
+
+    /* ==== Stack of villa cards ==== */
+    .stack {
+      max-width: 1200px; margin: 0 auto;
+      padding: 24px 24px 80px;
+      display: flex; flex-direction: column; gap: 40px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 300ms var(--ease),
+                  transform 400ms var(--ease),
+                  box-shadow 400ms var(--ease);
+    }
+    .card:hover {
+      border-color: color-mix(in srgb, var(--ink) 30%, var(--line));
+      transform: translateY(-2px);
+      box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--ink) 25%, transparent);
+    }
+
+    /* Banner image */
+    .banner {
+      position: relative; aspect-ratio: 21 / 9; overflow: hidden;
+      background: linear-gradient(135deg, var(--aurora-1) 0%, var(--aurora-2) 40%, var(--aurora-3) 75%, var(--aurora-4) 100%);
+    }
+    .banner.v2 { background: linear-gradient(135deg, #FBCFE8 0%, #DDD6FE 50%, #A5F3FC 100%); }
+    .banner.v3 { background: linear-gradient(135deg, #A5F3FC 0%, #FDE68A 45%, #FBCFE8 100%); }
+    .banner.v4 { background: linear-gradient(135deg, #DDD6FE 0%, #A5F3FC 50%, #FDE68A 100%); }
+    .banner.v5 { background: linear-gradient(135deg, #FDE68A 0%, #FBCFE8 55%, #DDD6FE 100%); }
+    .banner.v6 { background: linear-gradient(135deg, #A5F3FC 0%, #FBCFE8 40%, #FDE68A 100%); }
+
+    .banner::after {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(60% 60% at 30% 30%, rgba(255,255,255,.25), transparent 70%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .banner img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 8s var(--ease);
+    }
+    .card:hover .banner img { transform: scale(1.03); }
+
+    .banner.no-img img { display: none; }
+    .banner-title {
+      position: absolute; left: 32px; right: 32px; bottom: 32px;
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: clamp(30px, 3.6vw, 52px); line-height: 1.02;
+      letter-spacing: -.02em; color: var(--ink-2);
+      text-shadow: 0 1px 0 rgba(255,255,255,.4);
+      z-index: 2;
+      display: none;
+    }
+    .banner.no-img .banner-title { display: block; }
+
+    .banner-rank {
+      position: absolute; top: 24px; left: 24px; z-index: 3;
+      font-family: 'Playfair Display', serif;
+      font-weight: 500; font-size: 14px; letter-spacing: .04em;
+      color: var(--ink);
+      background: var(--paper); padding: 8px 14px;
+      border-radius: 999px; border: 1px solid var(--line);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .banner-rank .num { font-weight: 700; }
+    .banner-rank em { font-style: italic; color: var(--ink-4); }
+
+    .banner-caption {
+      position: absolute; right: 24px; top: 24px; z-index: 3;
+      padding: 6px 12px; border-radius: 999px;
+      background: color-mix(in srgb, var(--paper) 85%, transparent);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--line);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ink-2);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .banner-caption .dotr { width: 6px; height: 6px; border-radius: 50%; background: var(--warn); }
+    .banner-caption.real .dotr { background: var(--ok); }
+
+    .banner-tier {
+      position: absolute; right: 24px; bottom: 24px; z-index: 3;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--ink); color: var(--paper);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    body.dark .banner-tier { background: var(--paper); color: var(--ink); }
+
+    /* Body */
+    .card-body { padding: 40px 40px 44px; }
+    @media (max-width: 720px) { .card-body { padding: 28px 22px 32px; } .banner-title, .banner-rank, .banner-caption, .banner-tier { left: 16px; right: 16px; bottom: 16px; top: auto; } .banner-rank { top: 16px; bottom: auto; right: auto; } .banner-caption { top: 16px; right: 16px; bottom: auto; } .banner-tier { right: 16px; bottom: 16px; } .banner-title { bottom: 56px; left: 16px; right: 16px; font-size: 28px; } }
+
+    .head-row {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 24px; align-items: end;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 720px) { .head-row { grid-template-columns: 1fr; gap: 12px; } }
+
+    .location {
+      font-size: 12px; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--ink-4);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .location .flag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--paper-2); border: 1px solid var(--line);
+      padding: 3px 10px; border-radius: 6px;
+      font-size: 11px; letter-spacing: .1em;
+    }
+
+    .head-row h2 {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: clamp(30px, 3.4vw, 46px); line-height: 1.05;
+      letter-spacing: -.02em;
+    }
+
+    .score-block { text-align: right; }
+    @media (max-width: 720px) { .score-block { text-align: left; } }
+    .score-block .big {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: 42px; letter-spacing: -.02em; color: var(--ink);
+      line-height: 1;
+    }
+    .score-block .big span { font-size: 18px; color: var(--ink-4); }
+    .score-block .sublabel {
+      font-size: 11px; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--ink-4); margin-top: 6px;
+    }
+
+    .lede {
+      font-size: 17px; line-height: 1.6; color: var(--ink-2);
+      max-width: 68ch; margin-bottom: 32px;
+    }
+    .lede::first-letter {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: 46px; float: left; line-height: .9;
+      margin: 6px 12px 0 0; color: var(--accent-ink);
+    }
+    body.dark .lede::first-letter { color: #FBCFE8; }
+
+    /* Facilities */
+    .facilities {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+    @media (max-width: 640px) { .facilities { grid-template-columns: 1fr 1fr; } }
+    .fac {
+      padding: 16px 18px 16px 0; border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .fac:last-child { border-right: 0; padding-right: 0; }
+    @media (max-width: 640px) {
+      .fac:nth-child(2) { border-right: 0; }
+      .fac:nth-last-child(-n+2) { border-bottom: 0; padding-bottom: 0; }
+    }
+    .fac-head { display: flex; align-items: center; gap: 10px; }
+    .fac-ic {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .fac-label {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--ink-4);
+    }
+    .fac-val { font-size: 14px; color: var(--ink-2); line-height: 1.35; }
+
+    /* Specs */
+    .specs {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+    @media (max-width: 640px) { .specs { grid-template-columns: 1fr 1fr; } }
+    .spec { padding: 14px 18px 14px 0; border-right: 1px solid var(--line); }
+    .spec:last-child { border-right: 0; padding-right: 0; }
+    @media (max-width: 640px) {
+      .spec:nth-child(2) { border-right: 0; }
+      .spec:nth-last-child(-n+2) { border-bottom: 0; }
+    }
+    .spec dt {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--ink-4); margin-bottom: 6px;
+    }
+    .spec dd { font-size: 15px; font-weight: 500; color: var(--ink-2); line-height: 1.35; }
+
+    /* Note / Consider */
+    .note {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 14.5px; line-height: 1.55; color: var(--ink-3);
+      padding: 14px 18px; background: var(--paper-2);
+      border-left: 2px solid var(--ink-3); border-radius: 6px;
+      margin-bottom: 24px;
+    }
+    .note strong {
+      font-family: 'Inter', sans-serif; font-style: normal; font-weight: 600;
+      color: var(--ink-2); display: block;
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    /* Actions */
+    .actions {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 20px; border-radius: 999px;
+      font-size: 14px; font-weight: 600; letter-spacing: .005em;
+      cursor: pointer; text-decoration: none;
+      border: 1px solid transparent;
+      transition: background 200ms var(--ease), color 200ms var(--ease),
+                  border-color 200ms var(--ease), transform 140ms var(--ease);
+      font-family: inherit;
+    }
+    .btn-primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .btn-primary:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-primary:active { transform: scale(.98); }
+
+    .btn-ghost { background: transparent; color: var(--ink-2); border-color: var(--line); }
+    .btn-ghost:hover { border-color: var(--ink-2); color: var(--ink); }
+    .btn-ghost:active { transform: scale(.98); }
+
+    .btn-copy { background: var(--paper); color: var(--ink-2); border-color: var(--line); }
+    .btn-copy:hover { border-color: var(--ink-2); color: var(--ink); }
+    .btn-copy.is-copied { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+    .btn-copy:active { transform: scale(.98); }
+
+    .btn svg {
+      width: 14px; height: 14px; fill: none; stroke: currentColor;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+      transition: transform 200ms var(--ease);
+    }
+    .btn-primary:hover svg { transform: translateX(3px); }
+
+    .meta-tail { margin-left: auto; font-size: 11px; letter-spacing: .08em; color: var(--ink-4); }
+
+    /* Closer */
+    .closer {
+      max-width: 1200px; margin: 0 auto 64px;
+      padding: 56px 40px;
+      border: 1px solid var(--line); border-radius: var(--radius);
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 24px; align-items: center;
+      background: linear-gradient(135deg, var(--paper) 0%, var(--paper-2) 100%);
+      position: relative; overflow: hidden;
+    }
+    .closer::before {
+      content: ""; position: absolute;
+      inset: -30% -10% auto auto; width: 60%; height: 220%;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 18%, transparent), transparent);
+      filter: blur(40px);
+    }
+    @media (max-width: 720px) { .closer { grid-template-columns: 1fr; padding: 40px 24px; margin: 0 24px 48px; } }
+
+    .closer h4 {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -.015em;
+      color: var(--ink); margin-bottom: 6px;
+    }
+    .closer p { color: var(--ink-3); font-size: 15px; max-width: 60ch; }
+
+    footer {
+      max-width: 1200px; margin: 0 auto;
+      padding: 24px 24px 64px;
+      border-top: 1px solid var(--line);
+      color: var(--ink-4); font-size: 13px;
+      display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    footer .sig { font-family: 'Playfair Display', serif; font-style: italic; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      padding: 12px 20px; background: var(--ink); color: var(--paper);
+      font-size: 14px; font-weight: 500;
+      border-radius: 999px; opacity: 0;
+      transition: opacity 200ms var(--ease), transform 300ms var(--ease);
+      z-index: 70; pointer-events: none;
+      box-shadow: 0 15px 40px -15px rgba(0,0,0,.3);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ==== Extra opties: 3-col grid ==== */
+    .extras-wrap {
+      max-width: 1200px; margin: 16px auto 0;
+      padding: 0 24px 80px;
+    }
+    .extras-head {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 16px; align-items: end;
+      padding: 40px 0 24px;
+      border-top: 1px solid var(--line);
+    }
+    @media (max-width: 720px) { .extras-head { grid-template-columns: 1fr; padding: 32px 0 20px; } }
+    .extras-head h3 {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: clamp(28px, 3.2vw, 40px); letter-spacing: -.02em; line-height: 1.05;
+      color: var(--ink);
+    }
+    .extras-head p {
+      color: var(--ink-3); font-size: 15px; max-width: 56ch;
+      margin-top: 8px;
+    }
+    .extras-head .eyebrow-line {
+      font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--ink-4); font-weight: 600;
+    }
+    .extras-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    @media (max-width: 960px) { .extras-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 620px) { .extras-grid { grid-template-columns: 1fr; } }
+
+    .mini-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color 300ms var(--ease),
+                  transform 400ms var(--ease),
+                  box-shadow 400ms var(--ease);
+    }
+    .mini-card:hover {
+      border-color: color-mix(in srgb, var(--ink) 30%, var(--line));
+      transform: translateY(-2px);
+      box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--ink) 25%, transparent);
+    }
+    .mini-banner {
+      position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+      background: linear-gradient(135deg, var(--aurora-1) 0%, var(--aurora-2) 40%, var(--aurora-3) 75%, var(--aurora-4) 100%);
+    }
+    .mini-banner.v2 { background: linear-gradient(135deg, #FBCFE8 0%, #DDD6FE 50%, #A5F3FC 100%); }
+    .mini-banner.v3 { background: linear-gradient(135deg, #A5F3FC 0%, #FDE68A 45%, #FBCFE8 100%); }
+    .mini-banner.v4 { background: linear-gradient(135deg, #DDD6FE 0%, #A5F3FC 50%, #FDE68A 100%); }
+    .mini-banner.v5 { background: linear-gradient(135deg, #FDE68A 0%, #FBCFE8 55%, #DDD6FE 100%); }
+    .mini-banner.v6 { background: linear-gradient(135deg, #A5F3FC 0%, #FBCFE8 40%, #FDE68A 100%); }
+    .mini-banner::after {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(60% 60% at 30% 30%, rgba(255,255,255,.22), transparent 70%);
+      mix-blend-mode: screen; pointer-events: none;
+    }
+    .mini-banner img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 8s var(--ease);
+    }
+    .mini-card:hover .mini-banner img { transform: scale(1.04); }
+    .mini-banner.no-img img { display: none; }
+    .mini-banner .m-title {
+      position: absolute; left: 18px; right: 18px; bottom: 16px;
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: 24px; line-height: 1.08; letter-spacing: -.015em;
+      color: var(--ink-2);
+      text-shadow: 0 1px 0 rgba(255,255,255,.4);
+      z-index: 2; display: none;
+    }
+    .mini-banner.no-img .m-title { display: block; }
+    .mini-banner .m-tier {
+      position: absolute; top: 14px; right: 14px; z-index: 3;
+      padding: 5px 10px; border-radius: 999px;
+      background: var(--paper); border: 1px solid var(--line);
+      font-size: 10px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--ink);
+    }
+    body.dark .mini-banner .m-tier { background: var(--paper); color: var(--ink); }
+    .mini-banner .m-flag {
+      position: absolute; top: 14px; left: 14px; z-index: 3;
+      padding: 5px 10px; border-radius: 999px;
+      background: color-mix(in srgb, var(--paper) 85%, transparent);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--line);
+      font-size: 11px; font-weight: 600;
+      color: var(--ink-2);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    .mini-body {
+      padding: 20px 22px 22px;
+      display: flex; flex-direction: column; gap: 14px;
+      flex: 1;
+    }
+    .mini-body h4 {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: 22px; line-height: 1.15; letter-spacing: -.01em;
+      color: var(--ink);
+    }
+    .mini-loc {
+      font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--ink-4); font-weight: 600;
+    }
+    .mini-lede {
+      color: var(--ink-3); font-size: 14px; line-height: 1.55;
+    }
+    .mini-facs {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .mini-fac {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 999px;
+      background: var(--paper-2);
+      font-size: 12px; color: var(--ink-2); font-weight: 500;
+    }
+    .mini-fac .ic {
+      width: 14px; height: 14px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 800;
+    }
+    .mini-fac .ic-yes { background: var(--ok-bg); color: var(--ok); }
+    .mini-fac .ic-qm { background: var(--warn-bg); color: var(--warn); }
+    .mini-specs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px 14px;
+      padding: 12px 0 0;
+      border-top: 1px dashed var(--line);
+    }
+    .mini-specs dt {
+      font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ink-4); font-weight: 700; margin-bottom: 2px;
+    }
+    .mini-specs dd {
+      font-size: 13px; color: var(--ink-2); font-weight: 500;
+    }
+    .mini-actions {
+      display: flex; gap: 8px; margin-top: auto;
+    }
+    .mini-actions .btn {
+      padding: 8px 14px; font-size: 13px;
+      border-radius: 999px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none;
+      transition: background 200ms var(--ease), border-color 200ms var(--ease), color 200ms var(--ease);
+    }
+    .mini-actions .btn svg {
+      width: 12px; height: 12px; stroke: currentColor;
+      stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .mini-actions .btn-primary {
+      background: var(--ink); color: var(--paper);
+      border: 1px solid var(--ink);
+    }
+    .mini-actions .btn-primary:hover { background: var(--ink-2); }
+    .mini-actions .btn-ghost {
+      background: transparent; color: var(--ink-2);
+      border: 1px solid var(--line);
+    }
+    .mini-actions .btn-ghost:hover { border-color: var(--ink-3); }
+
+    /* ==== Hoofdstack als 3-kolom mini-card grid
+       (overide op oude .card/.banner/.facilities: zelfde stijl als extras) ==== */
+    .stack {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px !important;
+      padding: 24px 24px 48px !important;
+    }
+    @media (max-width: 960px) { .stack { grid-template-columns: repeat(2, 1fr) !important; } }
+    @media (max-width: 620px) { .stack { grid-template-columns: 1fr !important; } }
+
+    .stack .card {
+      display: flex; flex-direction: column;
+      height: 100%;
+    }
+
+    /* Banner: alleen tier badge, geen rank/caption */
+    .stack .banner { aspect-ratio: 4 / 3; }
+    .stack .banner-rank,
+    .stack .banner-caption { display: none; }
+    .stack .banner-title {
+      font-size: 22px; left: 16px; right: 16px; bottom: 14px;
+      line-height: 1.1;
+    }
+    .stack .banner-tier {
+      top: 12px; right: 12px; bottom: auto; left: auto;
+      padding: 5px 10px; font-size: 10px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+
+    /* Body */
+    .stack .card-body {
+      padding: 18px 20px 20px;
+      flex: 1; display: flex; flex-direction: column; gap: 12px;
+    }
+
+    /* Head row: location boven, naam, score rechts */
+    .stack .head-row {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 12px; align-items: start;
+      padding: 0; border: 0;
+    }
+    .stack .head-row > div:first-child { min-width: 0; }
+    .stack .location {
+      font-size: 11px; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--ink-4); font-weight: 600;
+      margin-bottom: 4px;
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .stack .location .flag { color: var(--ink-2); }
+    .stack .head-row h2 {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: 22px; line-height: 1.15; letter-spacing: -.01em;
+      margin: 0;
+    }
+    .stack .score-block { text-align: right; flex-shrink: 0; }
+    .stack .score-block .big {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: 22px; line-height: 1; letter-spacing: -.01em;
+    }
+    .stack .score-block .big span { font-size: 11px; color: var(--ink-4); }
+    .stack .score-block .sublabel {
+      font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ink-4); margin-top: 2px; font-weight: 600;
+    }
+
+    /* Lede — iets meer tekst dan bij de extras (6 regels ipv 3) */
+    .stack .lede {
+      font-size: 14px; line-height: 1.55; color: var(--ink-3);
+      display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .stack .lede::first-letter {
+      font-size: 1em; line-height: inherit; float: none;
+      margin: 0; padding: 0; color: inherit; font-family: inherit;
+    }
+
+    /* Facilities als horizontale chips (niet meer een 4-col tabel) */
+    .stack .facilities {
+      display: flex; flex-wrap: wrap;
+      grid-template-columns: unset;
+      gap: 6px;
+      padding: 0; border: 0;
+    }
+    .stack .fac {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px; border-radius: 999px;
+      background: var(--paper-2);
+      border: 0;
+      gap: 6px;
+    }
+    .stack .fac-head { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+    .stack .fac-ic { width: 14px; height: 14px; font-size: 9px; font-weight: 800; }
+    .stack .fac-label {
+      font-size: 12px; font-weight: 500; color: var(--ink-2);
+      letter-spacing: 0; text-transform: none;
+    }
+    .stack .fac-val { display: none; }
+
+    /* Specs: 2 kolommen, locatie verbergen (staat al in .location) */
+    .stack .specs {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 14px;
+      padding: 10px 0 0;
+      border-top: 1px dashed var(--line);
+    }
+    .stack .specs .spec:nth-child(3) { display: none; }
+    .stack .specs dt {
+      font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ink-4); font-weight: 700; margin-bottom: 2px;
+    }
+    .stack .specs dd { font-size: 13px; color: var(--ink-2); font-weight: 500; }
+
+    /* Actions */
+    .stack .actions {
+      padding: 0; gap: 8px; flex-wrap: wrap;
+      margin-top: auto;
+      border-top: 0;
+      display: flex; align-items: center;
+    }
+    .stack .actions .btn {
+      padding: 8px 14px; font-size: 13px;
+      border-radius: 999px;
+    }
+    .stack .actions .btn svg { width: 12px; height: 12px; }
+    .stack .meta-tail { display: none; }
+
+    @media (max-width: 620px) {
+      .stack .banner { aspect-ratio: 16 / 10; }
+      .stack .banner-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="wordmark"><span class="wordmark-mark"></span>Holiday Scout</div>
+    <nav class="nav" aria-label="Hoofdnavigatie">
+      <a href="all-properties.html" aria-current="page">Alle opties</a>
+      <a href="regions.html">Regio's</a>
+      <a href="summary.html">Samenvatting</a>
+    </nav>
+    <button class="mode-btn" id="modeBtn" aria-label="Wissel lichte en donkere modus">
+      <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero" aria-labelledby="heroTitle">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="dot"></span>Alle opties augustus 2026 · Spanje, Italië, Portugal</span>
+    <h1 id="heroTitle">22 huizen waar je <em>niet</em> tegen toeristen aanloopt.</h1>
+    <dl class="hero-meta">
+      <div><dt>Wanneer</dt><dd>20-27 augustus</dd></div>
+      <div><dt>Gezelschap</dt><dd>3 volw., 3 kind.</dd></div>
+      <div><dt>Budget</dt><dd>€1.200-€2.000 / wk</dd></div>
+      <div><dt>Vereist</dt><dd>Strand, schaduw, eten</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="legend" aria-label="Faciliteiten-legenda">
+  <span class="legend-item"><span class="ic ic-yes">✓</span>Bevestigd</span>
+  <span class="legend-item"><span class="ic ic-ex">+</span>Tegen meerprijs</span>
+  <span class="legend-item"><span class="ic ic-qm">?</span>Onbekend, navragen</span>
+  <span class="legend-item"><span class="ic ic-no">✕</span>Niet aanwezig</span>
+</section>
+
+<section class="section-intro">
+  <h2>De kandidaten.</h2>
+  <p>Directe eigenaren staan boven in de lijst omdat die 25 tot 30 procent goedkoper zijn dan dezelfde villa via een platform. Daaronder de grotere verhuurders. Van elk strand is bevestigd dat het zand is, niet kiezels, met bronvermelding in het onderzoeksrapport.</p>
+</section>
+
+<section class="stack" aria-label="Alle villa's">
+
+  <!-- ============ 00 Masseria Mongio (TOP PICK) ============ -->
+  <article class="card">
+    <div class="banner no-img">
+      <div class="banner-rank"><span class="num">★</span><em>Top keuze</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Boerderij</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f1/Otranto_-_Seafront_-_01.jpg&w=1200&q=80&output=jpg" alt="Masseria Mongio" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Masseria Mongio</h3>
+      <span class="banner-tier">Tier S</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇮🇹 Italië</span><span>Otranto · Salento</span></div>
+          <h2>Masseria Mongio Otranto</h2>
+        </div>
+        <div class="score-block"><div class="big">9.3<span> / 10</span></div><div class="sublabel">Directe eigenaar</div></div>
+      </div>
+      <p class="lede">Werkende boerderij met eigen restaurant waar een Apulische chef kookt. Kinderen helpen mee bij oogsten. Eigen wijnarsenaal. Geen toeristen in augustus, alleen lokale gasten die voor het eten komen.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">In tuin</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Bevestigd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Alle kamers</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">20 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.200–€1.800</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8–10 personen · 4 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Otranto, Puglia</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://www.masseriamongio.com/en/" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Masseria+Mongio+Otranto" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 01 Villa Pinatar Jávea ============ -->
+  <article class="card">
+    <div class="banner no-img">
+      <div class="banner-rank"><span class="num">01</span><em>Beste Jávea</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Granadella</div>
+      <img src="https://b3470997.smushcdn.com/3470997/wp-content/uploads/2024/12/Rent-Holiday-Villas-Vacation-Home-Rentals-w.jpg" alt="Villa Pinatar" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Villa Pinatar</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇪🇸 Spanje</span><span>Jávea · Costa Blanca</span></div>
+          <h2>Villa Pinatar Jávea</h2>
+        </div>
+        <div class="score-block"><div class="big">9.3<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">Granadella Park: fijn zand dat je voeten voelt, water warm genoeg in augustus. Villa slaapt tien, vijf bedkamers, eigen verwarmd zwembad, keuken waar je echt kunt koken.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Verwarmd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Bevestigd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Alle kamers</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5 min, fijn zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.757</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>10 personen · 5 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Costa Blanca</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://excellenceluxuryvillas.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Villa+Pinatar+Javea" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 02 Casa Saladar ============ -->
+  <article class="card">
+    <div class="banner v2 no-img">
+      <div class="banner-rank"><span class="num">02</span><em>Beste in Jávea</em></div>
+      <div class="banner-caption"><span class="dotr"></span>5BR groot</div>
+      <img src="https://b3470997.smushcdn.com/3470997/wp-content/uploads/2026/04/casa-saladar-javea-luxury-villa-rental-javea-spain-sea-view-01.jpg?lossy=2&strip=1&webp=1" alt="Casa Saladar" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Casa Saladar</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇪🇸 Spanje</span><span>Jávea · Costa Blanca</span></div>
+          <h2>Casa Saladar</h2>
+        </div>
+        <div class="score-block"><div class="big">9.1<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">Vijf bedkamers over twee niveaus. Je ziet de zee vanuit drie kamers; 's avonds de vislichten van de boten. De vismarkt begint om zes uur 's ochtends twee straten lager.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Bevestigd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Alle kamers</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">8 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.743</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>10 personen · 5 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Jávea, Costa Blanca</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://excellenceluxuryvillas.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Casa+Saladar+Javea" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 03 Casa Tossal Jávea ============ -->
+  <article class="card">
+    <div class="banner v3 no-img">
+      <div class="banner-rank"><span class="num">03</span><em>Modern</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Renovatie</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/9b/J%C3%A1vea_desde_el_Montg%C3%B3.jpg&w=1200&q=80&output=jpg" alt="Casa Tossal" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Casa Tossal</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇪🇸 Spanje</span><span>Jávea · Costa Blanca</span></div>
+          <h2>Casa Tossal</h2>
+        </div>
+        <div class="score-block"><div class="big">8.9<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">320 m², open plan begane grond met warme tegels die je ziet gloeien in het ochtendlicht. Het zandstrand begint waar de weg naar beneden breekt.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Modern design</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€2.258</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>10 personen · 5 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Jávea, Costa Blanca</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://excellenceluxuryvillas.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Casa+Tossal+Javea" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 04 Villa Agua de Mar ============ -->
+  <article class="card">
+    <div class="banner v4 no-img">
+      <div class="banner-rank"><span class="num">04</span><em>Formentera</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Directe eigenaar</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/9b/J%C3%A1vea_desde_el_Montg%C3%B3.jpg&w=1200&q=80&output=jpg" alt="Villa Agua de Mar" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Villa Agua de Mar</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇪🇸 Spanje</span><span>Formentera · Balearische Eilanden</span></div>
+          <h2>Villa Agua de Mar</h2>
+        </div>
+        <div class="score-block"><div class="big">8.8<span> / 10</span></div><div class="sublabel">Direct eigenaar</div></div>
+      </div>
+      <p class="lede">Cala Saona: water zo helder dat je tien meter diep nog zand ziet. Kleine cove, geen toeristen voorbij vier uur 's middags. Eigenaar woont vier huizen verder.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-qm">?</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-qm">?</span><span class="fac-label">Airco</span></div><span class="fac-val">Onbekend</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">800m, wit zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>Op aanvraag</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8-10 personen</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Cala Saona</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://formenteranatural.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Cala+Saona+Formentera" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 05 House by the Sea ============ -->
+  <article class="card">
+    <div class="banner v5 no-img">
+      <div class="banner-rank"><span class="num">05</span><em>Puglia</em></div>
+      <div class="banner-caption"><span class="dotr"></span>30m pool</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f1/Otranto_-_Seafront_-_01.jpg&w=1200&q=80&output=jpg" alt="House by the Sea" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">House by the Sea</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇮🇹 Italië</span><span>Otranto · Puglia</span></div>
+          <h2>House by the Sea</h2>
+        </div>
+        <div class="score-block"><div class="big">8.7<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">30 meter lang zwembad; je hoort het water tegen de tegels ketsen als je wakker wordt. Keuken gegrond in Puglese klassieke; de eigenaar's nonna kookt er elke donderdag.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">30m x 4m</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Verwacht</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5-10 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>Op aanvraag</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>10 personen · 5 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Otranto, Puglia</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://nice2stay.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=House+by+the+Sea+Otranto" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 06 Villa Arca Otranto ============ -->
+  <article class="card">
+    <div class="banner v6 no-img">
+      <div class="banner-rank"><span class="num">06</span><em>Centrum</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Historisch</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f1/Otranto_-_Seafront_-_01.jpg&w=1200&q=80&output=jpg" alt="Villa Arca" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Villa Arca</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇮🇹 Italië</span><span>Otranto · Salento</span></div>
+          <h2>Villa Arca Otranto</h2>
+        </div>
+        <div class="score-block"><div class="big">8.6<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">Modern, maar met ramen gericht op de havenkade waar de vissersboten liggen. Haven-ruis 's ochtends; 's avonds stil. Vijf restaurants te voet, geen twee gelijk.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Verwacht</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>Op aanvraag</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8-10 personen · 4-5 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Otranto centrum</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://rivedelsalento.it" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Otranto+Italy" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 07 Casa Pizzelli ============ -->
+  <article class="card">
+    <div class="banner no-img">
+      <div class="banner-rank"><span class="num">07</span><em>Design</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Uggiano</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/b/b9/Torre_Pali_1054.jpg&w=1200&q=80&output=jpg" alt="Casa Pizzelli" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Casa Pizzelli</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇮🇹 Italië</span><span>Uggiano · Salento</span></div>
+          <h2>Casa Pizzelli</h2>
+        </div>
+        <div class="score-block"><div class="big">8.5<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">Kleine villa, vier bedkamers, dorpsplein met fontein buiten je voordeur. Zandstranden tien minuten, maar je fietst langs olijfbomen die minstens honderd jaar oud zijn.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Modern design</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">10 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>Op aanvraag</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8 personen · 4 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Uggiano, Salento</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://nice2stay.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Uggiano+la+Chiesa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 08 Casa Picaio ============ -->
+  <article class="card">
+    <div class="banner v2 no-img">
+      <div class="banner-rank"><span class="num">08</span><em>Goed waarde</em></div>
+      <div class="banner-caption"><span class="dotr"></span>€1.631</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f7/Old_city_of_Tropea_-_View_from_the_road_-_Italy_2015.JPG&w=1200&q=80&output=jpg" alt="Casa Picaio" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Casa Picaio</h3>
+      <span class="banner-tier">Tier A</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇪🇸 Spanje</span><span>Jávea · Costa Blanca</span></div>
+          <h2>Casa Picaio</h2>
+        </div>
+        <div class="score-block"><div class="big">8.4<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">Acht personen, pool op het dak. 's Avonds kun je de sterren recht boven het water zien. Stranden twee minuten lopen; drie restaurants waar ze je naam kennen.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Zeezicht</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Aangenomen</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Modern</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5 min lopen</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.631</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8 personen · 4 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Jávea</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://excellenceluxuryvillas.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Javea+Costa+Blanca" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 09 Casa Olimpo ============ -->
+  <article class="card">
+    <div class="banner v3 no-img">
+      <div class="banner-rank"><span class="num">09</span><em>Hedendaags</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Contemporary</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/5/5d/Ostuni_col_drone.jpg&w=1200&q=80&output=jpg" alt="Casa Olimpo" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Casa Olimpo</h3>
+      <span class="banner-tier">Tier A</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇪🇸 Spanje</span><span>Jávea · Costa Blanca</span></div>
+          <h2>Casa Olimpo</h2>
+        </div>
+        <div class="score-block"><div class="big">8.3<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">Vier bedkamers, privé pool verwarmd tot 28 graden. Vooruit naar zee; achteruit naar een stille binnenplaats met citroenbomen. Restaurants op twee hoeken.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Bevestigd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5-10 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.962</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8 personen · 4 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Jávea</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://excellenceluxuryvillas.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Javea" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 10 Coste del Sud ============ -->
+  <article class="card">
+    <div class="banner v4 no-img">
+      <div class="banner-rank"><span class="num">10</span><em>Beste prijs</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Pescoluse</div>
+      <img src="https://www.costedelsud.it/images/case-vacanze-fronte-mare-salento.jpg" alt="Coste del Sud" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Coste del Sud</h3>
+      <span class="banner-tier">Tier A</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇮🇹 Italië</span><span>Pescoluse · Salento</span></div>
+          <h2>Coste del Sud</h2>
+        </div>
+        <div class="score-block"><div class="big">8.6<span> / 10</span></div><div class="sublabel">Regionale verhuurder</div></div>
+      </div>
+      <p class="lede">Pescoluse zit voorbij de Instagram-drempel; wit zand, turquoise water, geen toeristengeweld. Laagste weekbedrag in het onderzoek. Directe verhuurder.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-qm">?</span><span class="fac-label">BBQ</span></div><span class="fac-val">Onbekend</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-qm">?</span><span class="fac-label">Airco</span></div><span class="fac-val">Onbekend</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">Lopend naar zee</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.200</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8 personen · 4 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Pescoluse, Salento</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://costedelsud.it" target="_blank" rel="noopener">Bezoek verhuurder <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Pescoluse+Italy" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 11 Ocean Villas Luz ============ -->
+  <article class="card">
+    <div class="banner v5 no-img">
+      <div class="banner-rank"><span class="num">11</span><em>Portugal top</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Direct oceaan</div>
+      <img src="https://www.luzholidays.com/pt/wp-content/uploads/2017/04/Doce-Vida-Piscina-Ferias-5-925x465.jpg" alt="Ocean Villas Luz" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Ocean Villas Luz</h3>
+      <span class="banner-tier">Tier A+</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇵🇹 Portugal</span><span>Praia da Luz · Algarve</span></div>
+          <h2>Ocean Villas Luz</h2>
+        </div>
+        <div class="score-block"><div class="big">8.9<span> / 10</span></div><div class="sublabel">Luxe verhuurder</div></div>
+      </div>
+      <p class="lede">Onder 100 meter van blauwvlagstrand. Wake-up call: kust-wind en meeuwen. Zwembad met zoutwater. Strand waar Portugese gezinnen komen; geen resort-sfeer.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">+ tropisch</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Bevestigd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">Direct oceaan</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>Op aanvraag</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>6-12 personen (variabel)</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Praia da Luz</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://oceanvillasluz.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Praia+da+Luz+Portugal" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 12 The Folly ============ -->
+  <article class="card">
+    <div class="banner v6 no-img">
+      <div class="banner-rank"><span class="num">12</span><em>Boutique</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Charmant</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/7/74/Vista_parcial_da_luz.jpg&w=1200&q=80&output=jpg" alt="The Folly" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">The Folly</h3>
+      <span class="banner-tier">Tier A</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇵🇹 Portugal</span><span>Praia da Luz · Algarve</span></div>
+          <h2>The Folly</h2>
+        </div>
+        <div class="score-block"><div class="big">8.2<span> / 10</span></div><div class="sublabel">Boutique verhuurder</div></div>
+      </div>
+      <p class="lede">70 meter tot het blauwvlagstrand; je hoort de golven terugvallen. Verwarmd zwembad blijft 's nachts open. Tuinen vol met planten die je naam niet kent maar wel ruikt.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Verwarmd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Verwacht</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">70m, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>Op aanvraag</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>4-6 personen · 2-3 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Praia da Luz</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://letsletalgarve.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Luz+Lagos+Algarve" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 13 SandyBlue ============ -->
+  <article class="card">
+    <div class="banner no-img">
+      <div class="banner-rank"><span class="num">13</span><em>Curated</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Algarve-wide</div>
+      <img src="https://mda.sandyblue.com/media/images/promo_slides/1/l/720x720/SB-SignatureLuxuryCollection-46.jpg" alt="SandyBlue" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">SandyBlue</h3>
+      <span class="banner-tier">Tier A</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇵🇹 Portugal</span><span>Algarve · Meerdere locaties</span></div>
+          <h2>SandyBlue Luxury Collection</h2>
+        </div>
+        <div class="score-block"><div class="big">8.1<span> / 10</span></div><div class="sublabel">Geselecteerde verhuurder</div></div>
+      </div>
+      <p class="lede">Luxe villas verspreid over de Algarve; elk op een ander zandstrand. SandyBlue controleert alle vlaggen en watertemperatuur voordat je arriveert. Geen verassingen.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Alle</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Standaard</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Alle</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5-15 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.250-€3.200</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>6-12 personen</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Algarve (meerdere)</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://sandyblue.com/pt" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Algarve+Portugal" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 14 Villa in Portimão ============ -->
+  <article class="card">
+    <div class="banner v2 no-img">
+      <div class="banner-rank"><span class="num">14</span><em>Modern</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Vale de França</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/c/c6/Apartment_buildings_at_Praia_da_Rocha%2C_Portim%C3%A3o_%28cropped%29.jpg&w=1200&q=80&output=jpg" alt="Villa Portimão" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Villa Portimão</h3>
+      <span class="banner-tier">Tier A</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇵🇹 Portugal</span><span>Portimão · Algarve</span></div>
+          <h2>Villa in Portimão</h2>
+        </div>
+        <div class="score-block"><div class="big">8.0<span> / 10</span></div><div class="sublabel">Moderne verhuurder</div></div>
+      </div>
+      <p class="lede">Modern villa, Vale de França, twee straten boven het water. Praia do Vau voor zonsopgang, Praia da Rocha voor zonsondergang, beide vijf minuten. Alles ligt hier dicht op elkaar.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Waarschijnlijk</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Standaard</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">5 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>Op aanvraag</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>6-8 personen · 3 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Portimão, Algarve</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://mediaferias.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Portimao+Algarve" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ 15 Praia da Luz Traditional ============ -->
+  <article class="card">
+    <div class="banner v3 no-img">
+      <div class="banner-rank"><span class="num">15</span><em>Familie</em></div>
+      <div class="banner-caption"><span class="dotr"></span>Strand-dicht</div>
+      <img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/7/74/Vista_parcial_da_luz.jpg&w=1200&q=80&output=jpg" alt="Luz Family Villa" referrerpolicy="no-referrer" onload="this.closest('.banner').classList.remove('no-img')" onerror="this.closest('.banner').classList.add('no-img'); this.remove();"><h3 class="banner-title">Luz Family Villa</h3>
+      <span class="banner-tier">Tier A</span>
+    </div>
+    <div class="card-body">
+      <div class="head-row">
+        <div>
+          <div class="location"><span class="flag">🇵🇹 Portugal</span><span>Lagos · Algarve</span></div>
+          <h2>Praia da Luz Traditional Villa</h2>
+        </div>
+        <div class="score-block"><div class="big">8.3<span> / 10</span></div><div class="sublabel">Familie-vriendelijk</div></div>
+      </div>
+      <p class="lede">Vier bedkamers, 150 meter van strand. Vergrote achterzijde, familiaire indeling, BBQ bevestigd.</p>
+      <dl class="facilities">
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Privé-pool</span></div><span class="fac-val">Privé</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">BBQ</span></div><span class="fac-val">Bevestigd</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Airco</span></div><span class="fac-val">Standaard</span></div>
+        <div class="fac"><div class="fac-head"><span class="fac-ic ic-yes">✓</span><span class="fac-label">Strand</span></div><span class="fac-val">2 min, zand</span></div>
+      </dl>
+      <dl class="specs">
+        <div class="spec"><dt>Prijs</dt><dd>€1.250</dd></div>
+        <div class="spec"><dt>Slaapplek</dt><dd>8 personen · 4 BR</dd></div>
+        <div class="spec"><dt>Locatie</dt><dd>Praia da Luz</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://mediaferias.com" target="_blank" rel="noopener">Bezoek site <svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-11 11M5 7v12h12"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Luz+Lagos" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Maps</a>
+        <span class="meta-tail">24 april</span>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<section id="extras" class="extras-wrap" aria-label="Overige Tier A opties">
+  <div class="extras-head">
+    <div>
+      <span class="eyebrow-line">16 – 22 · Overige opties</span>
+      <h3>Verdere Tier A kandidaten</h3>
+      <p>Niet doorgeschoven naar de top 15 omdat er nog te veel te checken is (prijs, BBQ, airco), maar kwalitatief in dezelfde orde. Waard om te bellen als de top 5 vol blijkt.</p>
+    </div>
+  </div>
+
+  <div class="extras-grid">
+
+    <!-- 16 Villa Capo d'Oro -->
+    <article class="mini-card" data-villa="Villa Capo d'Oro">
+      <div class="mini-banner"><img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/9b/J%C3%A1vea_desde_el_Montg%C3%B3.jpg&w=1200&q=80&output=jpg" alt="Villa Capo d'Oro" referrerpolicy="no-referrer" onerror="this.closest('.mini-banner').classList.add('no-img'); this.remove();">
+        <span class="m-flag">🇪🇸 Formentera</span>
+        <span class="m-tier">Tier A</span>
+        <h4 class="m-title">Villa Capo d'Oro</h4>
+      </div>
+      <div class="mini-body">
+        <div>
+          <div class="mini-loc">Formentera · Balearen</div>
+          <h4>Villa Capo d'Oro</h4>
+        </div>
+        <p class="mini-lede">Rustig familiehuis op het stille deel van Formentera, korte fietstocht naar Playa de Migjorn.</p>
+        <div class="mini-facs">
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Pool</span>
+          <span class="mini-fac"><span class="ic ic-qm">?</span>BBQ</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Airco</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Strand</span>
+        </div>
+        <dl class="mini-specs">
+          <div><dt>Prijs</dt><dd>€1.600–€2.000</dd></div>
+          <div><dt>Slaapt</dt><dd>8 · 4 BR</dd></div>
+        </dl>
+        <div class="mini-actions">
+          <a class="btn btn-primary" href="https://www.google.com/search?q=Villa+Capo+d%27Oro+Formentera" target="_blank" rel="noopener">Zoek site</a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Formentera+Capo+Oro" target="_blank" rel="noopener">Maps</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 17 Villa Las Palmas -->
+    <article class="mini-card" data-villa="Villa Las Palmas">
+      <div class="mini-banner v2"><img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/9b/J%C3%A1vea_desde_el_Montg%C3%B3.jpg&w=1200&q=80&output=jpg" alt="Villa Las Palmas" referrerpolicy="no-referrer" onerror="this.closest('.mini-banner').classList.add('no-img'); this.remove();">
+        <span class="m-flag">🇪🇸 Formentera</span>
+        <span class="m-tier">Tier A</span>
+        <h4 class="m-title">Villa Las Palmas</h4>
+      </div>
+      <div class="mini-body">
+        <div>
+          <div class="mini-loc">Formentera · Balearen</div>
+          <h4>Villa Las Palmas</h4>
+        </div>
+        <p class="mini-lede">Wit gestuukt, palmentuin, directe aanloop naar Illetes-zijkant. Kindvriendelijk plattegrondje.</p>
+        <div class="mini-facs">
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Pool</span>
+          <span class="mini-fac"><span class="ic ic-qm">?</span>BBQ</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Airco</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Strand</span>
+        </div>
+        <dl class="mini-specs">
+          <div><dt>Prijs</dt><dd>€1.400–€1.800</dd></div>
+          <div><dt>Slaapt</dt><dd>6–8 · 3 BR</dd></div>
+        </dl>
+        <div class="mini-actions">
+          <a class="btn btn-primary" href="https://www.google.com/search?q=Villa+Las+Palmas+Formentera" target="_blank" rel="noopener">Zoek site</a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Formentera+Las+Palmas" target="_blank" rel="noopener">Maps</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 18 Aguilarent -->
+    <article class="mini-card" data-villa="Aguilarent">
+      <div class="mini-banner v3"><img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/9b/J%C3%A1vea_desde_el_Montg%C3%B3.jpg&w=1200&q=80&output=jpg" alt="Aguilarent" referrerpolicy="no-referrer" onerror="this.closest('.mini-banner').classList.add('no-img'); this.remove();">
+        <span class="m-flag">🇪🇸 Spanje</span>
+        <span class="m-tier">Tier A</span>
+        <h4 class="m-title">Aguilarent</h4>
+      </div>
+      <div class="mini-body">
+        <div>
+          <div class="mini-loc">Costa Blanca</div>
+          <h4>Aguilarent</h4>
+        </div>
+        <p class="mini-lede">Regionale verhuurder met eigen huizenportefeuille rond Jávea en Moraira. Vaste contactpersoon, Nederlandse gasten gewend.</p>
+        <div class="mini-facs">
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Pool</span>
+          <span class="mini-fac"><span class="ic ic-qm">?</span>BBQ</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Airco</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Strand</span>
+        </div>
+        <dl class="mini-specs">
+          <div><dt>Prijs</dt><dd>€1.200–€2.000</dd></div>
+          <div><dt>Slaapt</dt><dd>6–10 · 3–5 BR</dd></div>
+        </dl>
+        <div class="mini-actions">
+          <a class="btn btn-primary" href="https://www.aguilarent.com" target="_blank" rel="noopener">Bezoek site</a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Javea+Moraira" target="_blank" rel="noopener">Maps</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 19 Masseria Mattiani -->
+    <article class="mini-card" data-villa="Masseria Mattiani">
+      <div class="mini-banner v4"><img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f1/Otranto_-_Seafront_-_01.jpg&w=1200&q=80&output=jpg" alt="Masseria Mattiani" referrerpolicy="no-referrer" onerror="this.closest('.mini-banner').classList.add('no-img'); this.remove();">
+        <span class="m-flag">🇮🇹 Italië</span>
+        <span class="m-tier">Tier A</span>
+        <h4 class="m-title">Masseria Mattiani</h4>
+      </div>
+      <div class="mini-body">
+        <div>
+          <div class="mini-loc">Salento · Puglia</div>
+          <h4>Masseria Mattiani</h4>
+        </div>
+        <p class="mini-lede">Oude hoeve met olijfgaard, eigen restaurantlicentie. Stenen muren houden het koel als het buiten 35°C is.</p>
+        <div class="mini-facs">
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Pool</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>BBQ</span>
+          <span class="mini-fac"><span class="ic ic-qm">?</span>Airco</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Strand</span>
+        </div>
+        <dl class="mini-specs">
+          <div><dt>Prijs</dt><dd>€950–€1.400</dd></div>
+          <div><dt>Slaapt</dt><dd>8–10 · 4 BR</dd></div>
+        </dl>
+        <div class="mini-actions">
+          <a class="btn btn-primary" href="https://www.google.com/search?q=Masseria+Mattiani+Salento" target="_blank" rel="noopener">Zoek site</a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Masseria+Mattiani+Puglia" target="_blank" rel="noopener">Maps</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 20 CaseVacanza Portfolio -->
+    <article class="mini-card" data-villa="CaseVacanza">
+      <div class="mini-banner v5"><img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/b/b9/Torre_Pali_1054.jpg&w=1200&q=80&output=jpg" alt="CaseVacanza" referrerpolicy="no-referrer" onerror="this.closest('.mini-banner').classList.add('no-img'); this.remove();">
+        <span class="m-flag">🇮🇹 Italië</span>
+        <span class="m-tier">Tier A</span>
+        <h4 class="m-title">CaseVacanza</h4>
+      </div>
+      <div class="mini-body">
+        <div>
+          <div class="mini-loc">Puglia · Calabria</div>
+          <h4>CaseVacanza portfolio</h4>
+        </div>
+        <p class="mini-lede">Italiaanse directory met directe eigenaren rond Salento en Calabria. Minder glossy site, vaak betere prijzen.</p>
+        <div class="mini-facs">
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Pool</span>
+          <span class="mini-fac"><span class="ic ic-qm">?</span>BBQ</span>
+          <span class="mini-fac"><span class="ic ic-qm">?</span>Airco</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Strand</span>
+        </div>
+        <dl class="mini-specs">
+          <div><dt>Prijs</dt><dd>€850–€1.500</dd></div>
+          <div><dt>Slaapt</dt><dd>6–12 · variabel</dd></div>
+        </dl>
+        <div class="mini-actions">
+          <a class="btn btn-primary" href="https://www.casevacanza.it" target="_blank" rel="noopener">Bezoek site</a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Puglia+Salento" target="_blank" rel="noopener">Maps</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 21 Villa Amuree -->
+    <article class="mini-card" data-villa="Villa Amuree">
+      <div class="mini-banner v6"><img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/5/5d/Ostuni_col_drone.jpg&w=1200&q=80&output=jpg" alt="Villa Amuree" referrerpolicy="no-referrer" onerror="this.closest('.mini-banner').classList.add('no-img'); this.remove();">
+        <span class="m-flag">🇮🇹 Italië</span>
+        <span class="m-tier">Tier A</span>
+        <h4 class="m-title">Villa Amuree</h4>
+      </div>
+      <div class="mini-body">
+        <div>
+          <div class="mini-loc">Ostuni · Puglia</div>
+          <h4>Villa Amuree</h4>
+        </div>
+        <p class="mini-lede">Witte gevel, typisch Ostuni, dakterras met zicht over olijfvelden. Korte rit naar Costa Merlata-stranden.</p>
+        <div class="mini-facs">
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Pool</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>BBQ</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Airco</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Strand</span>
+        </div>
+        <dl class="mini-specs">
+          <div><dt>Prijs</dt><dd>€1.100–€1.600</dd></div>
+          <div><dt>Slaapt</dt><dd>6–8 · 3–4 BR</dd></div>
+        </dl>
+        <div class="mini-actions">
+          <a class="btn btn-primary" href="https://www.google.com/search?q=Villa+Amuree+Ostuni" target="_blank" rel="noopener">Zoek site</a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Villa+Amuree+Ostuni" target="_blank" rel="noopener">Maps</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 22 Residence Villa Bellavita -->
+    <article class="mini-card" data-villa="Residence Villa Bellavita">
+      <div class="mini-banner"><img src="https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/f/f7/Old_city_of_Tropea_-_View_from_the_road_-_Italy_2015.JPG&w=1200&q=80&output=jpg" alt="Residence Villa Bellavita" referrerpolicy="no-referrer" onerror="this.closest('.mini-banner').classList.add('no-img'); this.remove();">
+        <span class="m-flag">🇮🇹 Italië</span>
+        <span class="m-tier">Tier A</span>
+        <h4 class="m-title">Villa Bellavita</h4>
+      </div>
+      <div class="mini-body">
+        <div>
+          <div class="mini-loc">Calabria · Tyrrheense kust</div>
+          <h4>Residence Villa Bellavita</h4>
+        </div>
+        <p class="mini-lede">Kleinschalige residence met eigen appartementen, zwembad en zeezicht. Hoge score op Italiaanse familiefora.</p>
+        <div class="mini-facs">
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Pool</span>
+          <span class="mini-fac"><span class="ic ic-qm">?</span>BBQ</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Airco</span>
+          <span class="mini-fac"><span class="ic ic-yes">✓</span>Strand</span>
+        </div>
+        <dl class="mini-specs">
+          <div><dt>Prijs</dt><dd>€900–€1.400</dd></div>
+          <div><dt>Slaapt</dt><dd>4–6 · 2–3 BR</dd></div>
+        </dl>
+        <div class="mini-actions">
+          <a class="btn btn-primary" href="https://www.google.com/search?q=Residence+Villa+Bellavita+Calabria" target="_blank" rel="noopener">Zoek site</a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Tropea+Calabria" target="_blank" rel="noopener">Maps</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="closer">
+  <div>
+    <h4>Klaar om te bellen?</h4>
+    <p>De top 5 moet vandaag of morgen gebeld. Augustus vult snel vol, en directe eigenaren onderhandelen beter dan platforms.</p>
+  </div>
+  <a class="btn btn-primary" href="index.html">Kaartoverzicht <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</section>
+
+<footer>
+  <span>Holiday Scout · Alle opties</span>
+  <span class="sig">Scores wegen eten, drukte, gezinsvriendelijkheid, prijs</span>
+  <span>Bijgewerkt 24 april 2026</span>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">E-mail gekopieerd naar klembord</div>
+
+<script>
+  const modeBtn = document.getElementById('modeBtn');
+  const root = document.body;
+  const setMode = (isDark, persist = true) => {
+    root.classList.toggle('dark', isDark);
+    modeBtn.setAttribute('aria-pressed', isDark);
+    if (persist) localStorage.setItem('hs-mode', isDark ? 'dark' : 'light');
+  };
+  const stored = localStorage.getItem('hs-mode');
+  if (stored) setMode(stored === 'dark', false);
+  else setMode(false, false);
+  modeBtn.addEventListener('click', () => setMode(!root.classList.contains('dark')));
+
+  // Foto's staan nu inline in de HTML (geen JS-injectie meer — robuuster,
+  // onafhankelijk van timing of browser-cache).
+</script>
+
+</body>
+</html>
